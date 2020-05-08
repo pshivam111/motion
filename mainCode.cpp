@@ -11,9 +11,13 @@ void drawCanvas()
     Y.imprint();
 }
 inline double cx(int a)
-{return 960+a; }
+{
+    return 960+a; 
+}
 inline double cy(int a)
-{return 508-a; }
+{
+    return 508-a;
+}
 double mod(double x, double y)
 {
     return sqrt(x*x+y*y);
@@ -24,16 +28,16 @@ double angle(double x,double y)
         return 0;
     else
     {    
-    if(x>=0&&y>=0)
-        return (57.32*atan(abs(y)/abs(x)));
-    else if(x<=0&&y>=0)
-        return 180-(57.32*atan(abs(y)/abs(x)));
-    else if(x<=0&&y<=0)
-        return 180+(57.32*atan(abs(y)/abs(x)));
-    else if(x>=0&&y<=0)
-        return -(57.32*atan(abs(y)/abs(x)));
-    else
-    return 0;
+        if(x>=0&&y>=0)
+            return (57.32*atan(abs(y)/abs(x)));
+        else if(x<=0&&y>=0)
+            return 180-(57.32*atan(abs(y)/abs(x)));
+        else if(x<=0&&y<=0)
+            return 180+(57.32*atan(abs(y)/abs(x)));
+        else if(x>=0&&y<=0)
+            return -(57.32*atan(abs(y)/abs(x)));
+        else
+        return 0;
     
     }
 }
@@ -90,16 +94,48 @@ public:
 
 };
 
+class circle: public Circle
+{
+    private:
+        int xc,yc;
+        int r;
+        int filled;
+        Circle c;
+    public:
+        circle(int a,int b,int cr)
+        {
+            xc=a; yc=b; r=cr;
+            c={cx(xc),cy(yc),r};
+        }
+    
+     void translate(int x,int y)
+     {
+         xc+=x; yc+=y;
+         c.moveTo(cx(xc),cy(yc));
+     }
+
+     void rotateO(double ang)
+    { 
+        double tx=xc,ty=yc;
+        xc=mod(tx,ty)*cos(rad(angle(tx,ty)+ang));
+        yc=mod(tx,ty)*sin(rad(angle(tx,ty)+ang));
+        c.moveTo(cx(xc),cy(yc));
+    } 
+ 
+};
 int main()
 {
 drawCanvas();
-// Line w(50,50,51,50);
 Point p(100,0);
-// w.imprint();
-wait(2);
 p.translate(50,0);
-wait(2);
 p.rotateO(45);
 wait(2);
 p.printCoor();
+circle c(70,70,40);
+wait(2);
+c.translate(50,50);
+wait(2);
+c.rotateO(50);
+wait(2);
+
 }
